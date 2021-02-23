@@ -1,3 +1,3 @@
 # Black_Jack
 
-im making a game og blackjack (21)
+im making a game of blackjack (21)
