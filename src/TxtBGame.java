@@ -2,7 +2,9 @@ import CardContainers.Deck;
 import CardContainers.Hand;
 import CardContainers.Pile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class TxtBGame {
@@ -12,6 +14,7 @@ public class TxtBGame {
     Deck pack;
     Hand[] hPlayers;
     Hand[] pcPlayers;
+    int totalNumberOfPlayers;
     Pile usedCards;
 
     public TxtBGame(int roundsPerGame, int hPlayers, int pcPlayers) {
@@ -20,10 +23,10 @@ public class TxtBGame {
         this.pack = new Deck();
         this.hPlayers = createPlayerArray(hPlayers);
         this.pcPlayers = createPcPlayerArray(pcPlayers);
-
+        this.totalNumberOfPlayers=hPlayers+pcPlayers;
     }
 
-    public Hand[] gethPlayers() {
+    public Hand[] getHPlayers() {
         return hPlayers;
     }
 
@@ -65,14 +68,14 @@ public class TxtBGame {
                     System.out.print("Enter y to end your turn. ");
                     in=this.userIP.next();
                 }
-
-
             }
 
             for (Hand i : this.pcPlayers) {// pcs play the game.
                 i.playForPc(this.pack);
                 System.out.println(i.handToString());
             }
+
+            Hand[][] ranking=calculateRankings();
 
 
             round++;
@@ -113,6 +116,30 @@ public class TxtBGame {
         TxtBGame g1 = new TxtBGame(1, 0, 10);
         g1.play();
         //System.out.println(g1);
+    }
+
+    private Hand[][] calculateRankings(){
+        ArrayList<Hand> winner = new ArrayList<>();
+        ArrayList<Hand> losers = new ArrayList<>();
+
+        for (Hand i: this.hPlayers) {
+            if (i.getHandValue() > 21) {
+                losers.add(i);
+            } else {
+                winner.add(i);
+            }
+        }
+
+        for (Hand i: this.pcPlayers) {
+            if (i.getHandValue() > 21) {
+                losers.add(i);
+            } else {
+                winner.add(i);
+            }
+        }
+        Collections.sort(winner);
+
+
     }
 
 }
